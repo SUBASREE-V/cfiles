@@ -4,7 +4,7 @@
 struct node {
     int data;
     struct node *next;
-}*first=NULL;
+}*first=NULL,*second=NULL,*third=NULL;
 
 void create(int A[],int n){
     struct node *t,*last;
@@ -155,6 +155,145 @@ void insert(struct node *p,int index,int key){
         
     }
 }
+
+void Insertsort(struct node *p,int x){
+    struct node *t,*q=NULL;
+    t=(struct node *)malloc(sizeof(struct node));
+    t->data = x;
+    t->next=NULL;
+    
+    if(first == NULL)
+        first = t;
+    
+    else{
+        while(p && p->data < x){
+            q=p;
+            p=p->next;
+        }
+        if(p==first){
+            t->next = first;
+            first =t;
+        }
+        else{
+            t->next=q->next;
+            q->next = t;
+        }
+    }
+}
+
+int deletenode (struct node *start,int pos){
+    struct node *p=first,*q=NULL;
+    
+    int x=-1;
+    if(pos < 1 || pos > count(p)){
+        return x;
+    }
+    else{
+        if(pos==1){
+            p=first;
+            x=p->data;
+            first=first->next;
+            free(p);
+            return x;
+        }
+        else{
+            for(int i=0;i<pos-1 && p;i++){
+                q=p;
+                p=p->next;
+            }
+            if(p){
+                q->next=p->next;
+                x = p->data;
+                free(p);
+                return x;
+            }
+        }
+    }
+    
+}
+
+int isSorted(struct Node *start)
+{
+ int x=-65536;
+ struct node *p=first;
+ while(p!=NULL)
+ {
+ if(p->data < x)
+ return 0;
+ x=p->data;
+ p=p->next;
+ }
+ return 1;
+
+}
+
+void removeduplicatesinsortedLL(struct node *start){
+    struct node *p=first,*q=first->next;
+    
+    while(q!=NULL){
+        if(p->data!=q->data){
+            p=q;
+            q=q->next;
+        }
+        else{
+            p->next=q->next;
+            free(q);
+            q=p->next;
+        }
+    }
+}
+
+void reverseusing_array(struct node *p){
+    struct node *q=first;
+    int *A,i=0;
+    
+    A=(int *)malloc(sizeof(int)*count(p));
+    
+    while(q!=NULL){
+        A[i]=q->data;
+        q=q->next;
+        i++;
+    }
+    q=first;
+    i--;
+    while(q!=NULL){
+        q->data =A[i--];
+        q=q->next;
+    }
+}
+
+void revrse_slidingpointers(struct node *start){
+    struct node *p=start,*q=NULL,*r=NULL;
+    
+    while(p!=NULL){
+        r=q;
+        q=p;
+        p=p->next;
+        q->next = r;
+    }
+    first = q;
+    
+}
+
+void reverse_recursively(struct node *q,struct node *p){
+  
+    if(p!=NULL){
+        reverse_recursively(p,p->next);
+        p->next=q;
+    }
+    else
+     first = q;
+    
+}
+
+void mergetwoLL(struct node * start1,struct node * start2){
+    struct node *p  = start1;
+    while(p!=NULL){
+        p=p->next;
+    }
+    p->next = start2;
+}
+
 int main(){ 
     int A[]={2,3,4,5,6};
     struct node *temp,*tempformove;
@@ -193,5 +332,40 @@ int main(){
     printf("\n");
     insert(first,1,9);
     display(first);
+    
+    printf("\n");
+    int B[]={10,20,30,30,40,40};
+    create(B,6);
+    display(first);
+    printf("\n\n");
+    Insertsort(first,5);
+    Insertsort(first,2);
+    display(first);
+    printf("\n");
+    printf("Deleted element : %d",deletenode(first,4));
+    printf("\n");
+    display(first);
+    printf("\n");
+    printf("Sorted:0; Not sorted:1; %d\n",isSorted(first));
+   /* int C[]={3,1,5,6};
+    create(C,4);
+    display(first);
+    printf("Sorted:0; Not sorted:1; %d\n",isSorted(first));
+    printf("\n");*/
+    
+    removeduplicatesinsortedLL(first);
+    display(first);
+    printf("\n");
+   /* reverseusing_array(first);
+    display(first);
+    printf("\n");*/
+    /*revrse_slidingpointers(first);
+    display(first);*/
+    
+    printf("\n");
+    reverse_recursively(NULL,first);
+    display(first);
+    
    
 }
+
